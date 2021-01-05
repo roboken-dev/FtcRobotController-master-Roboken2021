@@ -38,22 +38,25 @@ public class Robokenbot
     public DcMotor motorRearLeft;  // motor 2
     public DcMotor motorFrontRight; // motor 3
     public DcMotor motorRearRight; // motor 4
-    public Servo claw;
-    public CRServo arm;
-    public DigitalChannel digitalTouch;  // Hardware Device Object
     public ColorSensor sensorColor;
-    public DistanceSensor sensorDistance;
-    public CRServo intakeServo1;
-    public CRServo intakeServo2;
     public ColorSensor bottomSensorColor;
-    public Servo capstoneServo;
+    public DistanceSensor sensorDistance;
+
+    //Delete
+    //public Servo claw;
+    //public CRServo arm;
+    //public DigitalChannel digitalTouch;  // Hardware Device Object
+    //public CRServo intakeServo1;
+    //public CRServo intakeServo2;
+    //public Servo capstoneServo;
+
+
 
     private ElapsedTime     runtime = new ElapsedTime();
 
     BNO055IMU               imu;  //Note: you must configure the IMU on I2C channel 0, port 0.
     Orientation             lastAngles = new Orientation();
     double                  globalAngle, power = .30, correction;
-
 
 
     static final double     SCALE_FACTOR = 75.0/75.0; //  if drive speed = .2 or .3 use 75.0/75.0;  .5 is 75.0/76.0 .4 is 75.0/75.5 if drive_speed = .1, use 1.0; if drive_speed = .3, use 75.0/77.0 note that .3 has hard time braking
@@ -78,26 +81,33 @@ public class Robokenbot
         motorRearLeft = hwMap.dcMotor.get("motorRearLeft");
         motorFrontRight = hwMap.dcMotor.get("motorFrontRight");
         motorRearRight = hwMap.dcMotor.get("motorRearRight");
-        //       digitalTouch = hardwareMap.get(DigitalChannel.class, "sensor_digital");
+
+
+        //digitalTouch = hardwareMap.get(DigitalChannel.class, "sensor_digital");
 
         // get a reference to the color sensor.
         sensorColor = hwMap.get(ColorSensor.class, "sensor_color_distance");
         bottomSensorColor = hwMap.get(ColorSensor.class,"Bottom Color Sensor");
 
         // get a reference to the distance sensor that shares the same name.
+
+
         sensorDistance = hwMap.get(DistanceSensor.class, "sensor_color_distance");
 
-        claw = hwMap.servo.get("servo");
-        arm=hwMap.crservo.get("arm");
-        intakeServo1=hwMap.crservo.get("intakeServo1");
-        intakeServo2=hwMap.crservo.get("intakeServo2");
-        capstoneServo=hwMap.servo.get("capstone");
+
+        //Delete
+        //claw = hwMap.servo.get("servo");
+        //arm=hwMap.crservo.get("arm");
+        //intakeServo1=hwMap.crservo.get("intakeServo1");
+        //intakeServo2=hwMap.crservo.get("intakeServo2");
+        //capstoneServo=hwMap.servo.get("capstone");
 
         motorFrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorFrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorRearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorRearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        
+
+
         // reset to default
         initRunWithoutEncoder();
 
@@ -129,6 +139,7 @@ public class Robokenbot
         opmode.telemetry.update();
 
     }
+
 
     public void encoderDrive(double speed,
                              double leftInches, double rightInches,
@@ -212,6 +223,7 @@ public class Robokenbot
         }
     }
 
+
     public void initRunWithEncoder()
     {
         motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -232,6 +244,7 @@ public class Robokenbot
         motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
         motorRearLeft.setDirection(DcMotor.Direction.REVERSE);
     }
+
 
     public void initRunWithoutEncoder()
     {
@@ -255,6 +268,7 @@ public class Robokenbot
         motorRearRight.setPower(power);
     }
 
+
     public void driveBackward(double power) {
         motorFrontLeft.setPower(-power);
         motorFrontRight.setPower(-power);
@@ -262,9 +276,12 @@ public class Robokenbot
         motorRearRight.setPower(-power);
     }
 
+
     public void stopDriving() {
         driveForward(0);
     }
+
+
 
     public void turnLeft(double power) {
         motorFrontLeft.setPower(-power);
@@ -273,34 +290,35 @@ public class Robokenbot
         motorRearRight.setPower(power);
     }
 
+
+
     public void turnRight(double power) {
         turnLeft(-power);
     }
 
+
+
     public void driveForwardByTime(double power, long time) throws InterruptedException {
         driveForward(power);
         Thread.sleep(time);
-        // don't we need to add stopDriving() ?
-        //stopDriving();
-
+        stopDriving();
     }
 
     public void turnLeftByTime(double power, long time) throws InterruptedException {
         turnLeft(power);
         Thread.sleep(time);
-        // don't we need to add stopDriving() ?
-        //stopDriving();
-
+        stopDriving();
     }
+
 
     public void turnRightByTime(double power, long time) throws InterruptedException {
         turnRight(power);
         Thread.sleep(time);
-        // don't we need to add stopDriving() ?
-        //stopDriving();
+        stopDriving();
     }
 
 
+/*
     public void driveTillTouched(double power) {
         while (digitalTouch.getState() == true) {
             driveForward(power);
@@ -308,6 +326,7 @@ public class Robokenbot
         // don't we need to add stopDriving() ?
         //stopDriving();
     }
+ */
 
     public void driveTillThisClose(double power, double distance) {
         double howfar;
@@ -315,9 +334,9 @@ public class Robokenbot
         while (Double.isNaN(sensorDistance.getDistance(DistanceUnit.CM)) || sensorDistance.getDistance(DistanceUnit.CM) > distance) {
             driveForward(power);
         }
-        // don't we need to add stopDriving() ?
-        //stopDriving();
+        stopDriving();
     }
+
 
     public void strafeRight (double power)
     {
@@ -327,6 +346,7 @@ public class Robokenbot
         motorRearRight.setPower(power);
     }
 
+
     public void strafeLeft(double power) {
         motorFrontLeft.setPower(-power);
         motorRearLeft.setPower(power);
@@ -334,19 +354,20 @@ public class Robokenbot
         motorRearRight.setPower(-power);
     }
 
+
     public void strafeLeftByTime(double power, long time) throws InterruptedException {
         strafeLeft(power);
         Thread.sleep(time);
-        // don't we need to add stopDriving() ?
-        //stopDriving();
+        stopDriving();
     }
 
     public void strafeRightByTime(double power, long time) throws InterruptedException {
         strafeRight(power);
         Thread.sleep(time);
-        // don't we need to add stopDriving() ?
-        //stopDriving();
+        stopDriving();
     }
+
+
 
     // IMU sample from STEMRobotics educational example
 
@@ -370,9 +391,12 @@ public class Robokenbot
 
 
 
-    /**
+
+
+    /*
      * Resets the cumulative angle tracking to zero.
      */
+
     public void resetAngle()
     {
         lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -380,10 +404,12 @@ public class Robokenbot
         globalAngle = 0;
     }
 
+
     /**
      * Get current cumulative angle rotation from last reset.
      * @return Angle in degrees. + = left, - = right.
      */
+
     private double getAngle()
     {
         // We experimentally determined the Z axis is the axis we want to use for heading angle.
@@ -407,10 +433,13 @@ public class Robokenbot
         return globalAngle;
     }
 
+
+
     /**
      * See if we are moving in a straight line and if not return a power correction value.
      * @return Power adjustment, + is adjust left - is adjust right.
      */
+
     public double checkDirection()
     {
         // The gain value determines how sensitive the correction is to direction changes.
@@ -429,6 +458,7 @@ public class Robokenbot
 
         return correction;
     }
+
 
     /**
      * Rotate left or right the number of degrees. Does not support turning more than 180 degrees.

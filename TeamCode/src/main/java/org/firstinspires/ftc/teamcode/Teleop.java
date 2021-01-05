@@ -41,12 +41,18 @@ public class Teleop extends LinearOpMode {
         int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
         final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
+        robot.initRunWithoutEncoder();
 
         //Try moving into Robokenbot.java
+
+        /*
         robot.motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
         robot.motorRearLeft.setDirection(DcMotor.Direction.REVERSE);
         robot.motorFrontLeft.setDirection(DcMotor.Direction.FORWARD);
         robot.motorRearRight.setDirection(DcMotor.Direction.FORWARD);
+
+         */
+
 
 
         telemetry.addData("Status", "Ready to Go");

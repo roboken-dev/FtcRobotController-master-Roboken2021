@@ -49,7 +49,7 @@ public class Teleop extends LinearOpMode {
         robot.motorRearRight.setDirection(DcMotor.Direction.FORWARD);
 
 
-        telemetry.addData("Status", "Ready to Go");    //
+        telemetry.addData("Status", "Ready to Go");
         telemetry.update();
 
         waitForStart();
@@ -86,47 +86,47 @@ public class Teleop extends LinearOpMode {
             //Speed control for drive wheels
             if (gamepad1.dpad_up) {
                 speed_control = 1;
-                telemetry.addData("Status", "Setting Speed to 1");    //
+                telemetry.addData("Status", "Setting Speed to 1");
                 telemetry.update();
             }
             if (gamepad1.dpad_down) {
                 speed_control = 0.25f;
-                telemetry.addData("Status", "Setting Speed to .25");    //
+                telemetry.addData("Status", "Setting Speed to .25");
                 telemetry.update();
             }
             if (gamepad1.dpad_left) {
                 speed_control = 0.5f;
-                telemetry.addData("Status", "Setting Speed to .5");    //
+                telemetry.addData("Status", "Setting Speed to .5");
                 telemetry.update();
             }
             if (gamepad1.dpad_right) {
                 speed_control = 0.5f;
-                telemetry.addData("Status", "Setting Speed to .5");    //
+                telemetry.addData("Status", "Setting Speed to .5");
                 telemetry.update();
             }
 
 
-            //Strafing
-            if (G1rightTrigger > 0 && G1leftTrigger == 0) {
+            //motion
+            if (G1rightTrigger > 0 && G1leftTrigger == 0) {  // Right Strafe
 
                 robot.motorFrontLeft.setPower(-G1rightTrigger * speed_control);
                 robot.motorRearLeft.setPower(G1rightTrigger * speed_control);
                 robot.motorFrontRight.setPower(G1rightTrigger * speed_control);
                 robot.motorRearRight.setPower(-G1rightTrigger * speed_control);
 
-                telemetry.addData("Status", "Strafing Right");    //
+                telemetry.addData("Status", "Strafing Right");
                 telemetry.update();
 
-            } else if (G1leftTrigger > 0 && G1rightTrigger == 0) {
+            } else if (G1leftTrigger > 0 && G1rightTrigger == 0) {     //Left Strafe
                 robot.motorFrontLeft.setPower(G1leftTrigger * speed_control);
                 robot.motorRearLeft.setPower(-G1leftTrigger * speed_control);
                 robot.motorFrontRight.setPower(-G1leftTrigger * speed_control);
                 robot.motorRearRight.setPower(G1leftTrigger * speed_control);
 
-                telemetry.addData("Status", "Strafing Left");    //
+                telemetry.addData("Status", "Strafing Left");
                 telemetry.update();
 
-            } else {
+            } else {     //Tank Drive
                 robot.motorFrontLeft.setPower(G1leftStickY * Math.abs(G1leftStickY) * speed_control);
                 robot.motorRearLeft.setPower(G1leftStickY * Math.abs(G1leftStickY) * speed_control);
                 robot.motorFrontRight.setPower(G1rightStickY * Math.abs(G1rightStickY)  * speed_control);
@@ -136,24 +136,24 @@ public class Teleop extends LinearOpMode {
                 telemetry.update();
             }
 
+            //Delete all
+            /*
+
             if (gamepad2.left_bumper) {
                 robot.claw.setPosition(0.0);
-                telemetry.addData("Status", "Claw");    //
+                telemetry.addData("Status", "Claw");
                 telemetry.update();
             }
 
             if (gamepad2.right_bumper) {
                 robot.claw.setPosition(1.0);
-                telemetry.addData("Status", "Claw");    //
+                telemetry.addData("Status", "Claw");
                 telemetry.update();
                 idle();
 
             }
 
 
-
-            //Delete all
-            /*
             if (gamepad2.left_stick_y > 0 || gamepad2.left_stick_y < 0) {
                 robot.arm.setPower(gamepad2.left_stick_y * ArmSpeedControl+0.2);
             }
@@ -222,10 +222,13 @@ public class Teleop extends LinearOpMode {
                 robot.stopDriving();
 
             }
-*/
+
 
 
             robot.capstoneServo.setPosition(1-0.6*gamepad2.right_trigger);
+
+
+             */
             telemetry.update();
         }
 
@@ -235,5 +238,8 @@ public class Teleop extends LinearOpMode {
                 relativeLayout.setBackgroundColor(Color.WHITE);
             }
         });
+
+
+
     }
 }

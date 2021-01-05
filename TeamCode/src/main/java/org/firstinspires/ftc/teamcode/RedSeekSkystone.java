@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -12,7 +13,7 @@ import java.util.Locale;
 
 @Autonomous (name = "RedSeekSkystone", group = "12806") // drive to bridge via SkyStone path
 //@Autonomous (name = "RedSeekSkystone_Wall", group = "12806") // drive to bridge via wall path
-
+@Disabled
 public class RedSeekSkystone extends LinearOpMode {
 
     Robokenbot robot   = new Robokenbot();

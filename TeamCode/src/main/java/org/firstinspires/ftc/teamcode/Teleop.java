@@ -153,7 +153,7 @@ public class Teleop extends LinearOpMode {
 
 
 
-            //arm contorl
+            //arm control
             if(gamepad2.a){
                 ServoPosition = 0.0;
             }

@@ -26,7 +26,6 @@ public class Teleop extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         double speed_control = 0.5;
-        double temp;
 
         double ServoPosition = 0.1;
 
@@ -153,7 +152,7 @@ public class Teleop extends LinearOpMode {
 
 
 
-            //arm control
+            //claw auto control
             if(gamepad2.a){
                 ServoPosition = 0.0;
             }
@@ -166,7 +165,7 @@ public class Teleop extends LinearOpMode {
                 ServoPosition = 0.20;
             }
 
-
+            //claw manual control
             if(gamepad2.dpad_up){
                 ServoPosition += 0.01;
             }
@@ -174,132 +173,44 @@ public class Teleop extends LinearOpMode {
                 ServoPosition -= 0.01;
             }
 
-    if(gamepad2.left_stick_y!=0){
-            robot.armMotor.setPower(gamepad2.left_stick_y*-0.3*Math.abs(gamepad2.left_stick_y));}
-    else {
-        robot.armMotor.setPower(gamepad2.right_stick_y*-0.8 * Math.abs(gamepad2.right_stick_y));
-    }
-
-
-            if(gamepad2.left_bumper)
-            {
-                temp = speed_control;
-                speed_control=0;
-                robot.armMotor.setPower(0.4);
-                sleep(750);
-                robot.armMotor.setPower(0.0);
-                speed_control=temp;
-
-
-            }
+            robot.ClawServo.setPosition(ServoPosition);
             //these if statements do not work but we should probably have them
-            /*
-           if(ServoPosition > 1.0){
+
+           if(ServoPosition > 1.01)
+           {
                 ServoPosition = 1.0;
-            }
-            if(ServoPosition < 0.0);
+           }
+
+            if(ServoPosition < -0.01)
             {
                 ServoPosition = 0.0;
             }
-            */
 
 
-            robot.ClawServo.setPosition(ServoPosition);
 
 
-            //Delete all
-            /*
 
-            if (gamepad2.left_bumper) {
-                robot.claw.setPosition(0.0);
-                telemetry.addData("Status", "Claw");
-                telemetry.update();
-            }
+            //arm control
+            //left stick slow, right stick more power
+             if(gamepad2.left_stick_y!=0){
+                     robot.armMotor.setPower(gamepad2.left_stick_y*-0.3*Math.abs(gamepad2.left_stick_y));
+             }else {
+                 robot.armMotor.setPower(gamepad2.right_stick_y * -0.8 * Math.abs(gamepad2.right_stick_y));
+             }
 
-            if (gamepad2.right_bumper) {
-                robot.claw.setPosition(1.0);
-                telemetry.addData("Status", "Claw");
-                telemetry.update();
-                idle();
-
-            }
-
-
-            if (gamepad2.left_stick_y > 0 || gamepad2.left_stick_y < 0) {
-                robot.arm.setPower(gamepad2.left_stick_y * ArmSpeedControl+0.2);
-            }
-
-            if (gamepad2.left_stick_y < 0) {
-                robot.arm.setPower(gamepad2.left_stick_y *( ArmSpeedControl));
-            }
-
-            if (gamepad2.left_stick_y == 0) {
-                robot.arm.setPower(0.0);
-            }
-
-            if (gamepad2.y)
+             //auto raise to convenient height
+            if(gamepad2.left_bumper)
             {
-                ArmSpeedControl = 0.6;
+                robot.motorFrontLeft.setPower(0);
+                robot.motorRearLeft.setPower(0);
+                robot.motorFrontRight.setPower(0);
+                robot.motorRearRight.setPower(0);
+                robot.armMotor.setPower(0.4);
+                sleep(750);
+                robot.armMotor.setPower(0.0);
             }
 
 
-            if (gamepad2.a)
-            {
-                ArmSpeedControl = 0.4;
-            }
-
-            if (gamepad2.a)
-            {
-                ArmSpeedControl = 0.5;
-            }
-
-
-            if (gamepad2.dpad_up){
-                robot.intakeServo1.setDirection(CRServo.Direction.FORWARD);
-                robot.intakeServo2.setDirection(CRServo.Direction.REVERSE);
-                robot.intakeServo1.setPower(0.2);
-                robot.intakeServo2.setPower(0.2);
-
-            }
-
-            if (gamepad2.dpad_left) {
-                robot.intakeServo1.setPower(0);
-                robot.intakeServo2.setPower(0);
-            }
-
-            if (gamepad2.dpad_right) {
-                robot.intakeServo1.setPower(0);
-                robot.intakeServo2.setPower(0);
-            }
-
-
-
-            if (gamepad2.dpad_down){
-                robot.intakeServo1.setDirection(CRServo.Direction.REVERSE);
-                robot.intakeServo2.setDirection(CRServo.Direction.FORWARD);
-                robot.intakeServo1.setPower(0.2);
-                robot.intakeServo2.setPower(0.2);
-            }
-
-            if (gamepad2.x) {
-                robot.intakeServo1.setDirection(CRServo.Direction.REVERSE);
-                robot.intakeServo2.setDirection(CRServo.Direction.FORWARD);
-                robot.intakeServo1.setPower(0.2);
-                robot.intakeServo2.setPower(0.2);
-                robot.driveForward(.17);
-                sleep(1300);
-                robot.intakeServo1.setPower(0);
-                robot.intakeServo2.setPower(0);
-                robot.stopDriving();
-
-            }
-
-
-
-            robot.capstoneServo.setPosition(1-0.6*gamepad2.right_trigger);
-
-
-             */
             telemetry.update();
         }
 
@@ -309,8 +220,6 @@ public class Teleop extends LinearOpMode {
                 relativeLayout.setBackgroundColor(Color.WHITE);
             }
         });
-
-
 
     }
 }

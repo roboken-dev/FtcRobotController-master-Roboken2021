@@ -96,14 +96,6 @@ public class Robokenbot
 
         sensorDistance = hwMap.get(DistanceSensor.class, "sensor_color_distance");
 
-
-        //Delete
-        //claw = hwMap.servo.get("servo");
-        //arm=hwMap.crservo.get("arm");
-        //intakeServo1=hwMap.crservo.get("intakeServo1");
-        //intakeServo2=hwMap.crservo.get("intakeServo2");
-        //capstoneServo=hwMap.servo.get("capstone");
-
         motorFrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorFrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorRearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

@@ -41,7 +41,8 @@ public class Robokenbot
     public ColorSensor sensorColor;
     public ColorSensor bottomSensorColor;
     public DistanceSensor sensorDistance;
-
+    public Servo ClawServo;
+    public CRServo armMotor;
     //Delete
     //public Servo claw;
     //public CRServo arm;
@@ -81,7 +82,8 @@ public class Robokenbot
         motorRearLeft = hwMap.dcMotor.get("motorRearLeft");
         motorFrontRight = hwMap.dcMotor.get("motorFrontRight");
         motorRearRight = hwMap.dcMotor.get("motorRearRight");
-
+        ClawServo = hwMap.servo.get("ClawServo");
+        armMotor = hwMap.crservo.get("armMotor");
 
         //digitalTouch = hardwareMap.get(DigitalChannel.class, "sensor_digital");
 

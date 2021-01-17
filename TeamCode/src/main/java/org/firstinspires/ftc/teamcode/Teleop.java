@@ -26,6 +26,9 @@ public class Teleop extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         double speed_control = 0.5;
+        double temp;
+
+        double ServoPosition = 0.1;
 
 
         //double ArmSpeedControl = 0.6;  DELETE
@@ -38,20 +41,21 @@ public class Teleop extends LinearOpMode {
         final double SCALE_FACTOR = 255;
 
 
+
         int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
         final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
         robot.initRunWithoutEncoder();
 
-        //Try moving into Robokenbot.java
+        //for some reason having this is needed
 
-        /*
+
         robot.motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
         robot.motorRearLeft.setDirection(DcMotor.Direction.REVERSE);
         robot.motorFrontLeft.setDirection(DcMotor.Direction.FORWARD);
         robot.motorRearRight.setDirection(DcMotor.Direction.FORWARD);
 
-         */
+
 
 
 
@@ -67,8 +71,10 @@ public class Teleop extends LinearOpMode {
                     (int) (robot.bottomSensorColor.blue() * SCALE_FACTOR),
                     hsvValues);
 
-            telemetry.addData("Distance (cm)",
-                    String.format(Locale.US, "%.02f", robot.sensorDistance.getDistance(DistanceUnit.CM)));
+            //telemetry.addData("Distance (cm)",
+                    //String.format(Locale.US, "%.02f", robot.sensorDistance.getDistance(DistanceUnit.CM)));
+
+            telemetry.addData("Arm Position",ServoPosition);
             telemetry.addData("Alpha", robot.sensorColor.alpha());
             telemetry.addData("Red  ", robot.sensorColor.red());
             telemetry.addData("Green", robot.sensorColor.green());
@@ -87,6 +93,7 @@ public class Teleop extends LinearOpMode {
             double G1leftStickY = gamepad1.left_stick_y;
             float G1rightTrigger = gamepad1.right_trigger;
             float G1leftTrigger = gamepad1.left_trigger;
+
 
 
             //Speed control for drive wheels
@@ -141,6 +148,64 @@ public class Teleop extends LinearOpMode {
                 telemetry.addData("Status", "Moving");    //
                 telemetry.update();
             }
+
+
+
+
+
+            //arm contorl
+            if(gamepad2.a){
+                ServoPosition = 0.0;
+            }
+
+            if(gamepad2.b){
+                ServoPosition = 0.85;
+            }
+
+            if(gamepad2.x){
+                ServoPosition = 0.20;
+            }
+
+
+            if(gamepad2.dpad_up){
+                ServoPosition += 0.01;
+            }
+            if(gamepad2.dpad_down){
+                ServoPosition -= 0.01;
+            }
+
+    if(gamepad2.left_stick_y!=0){
+            robot.armMotor.setPower(gamepad2.left_stick_y*-0.3*Math.abs(gamepad2.left_stick_y));}
+    else {
+        robot.armMotor.setPower(gamepad2.right_stick_y*-0.8 * Math.abs(gamepad2.right_stick_y));
+    }
+
+
+            if(gamepad2.left_bumper)
+            {
+                temp = speed_control;
+                speed_control=0;
+                robot.armMotor.setPower(0.4);
+                sleep(750);
+                robot.armMotor.setPower(0.0);
+                speed_control=temp;
+
+
+            }
+            //these if statements do not work but we should probably have them
+            /*
+           if(ServoPosition > 1.0){
+                ServoPosition = 1.0;
+            }
+            if(ServoPosition < 0.0);
+            {
+                ServoPosition = 0.0;
+            }
+            */
+
+
+            robot.ClawServo.setPosition(ServoPosition);
+
 
             //Delete all
             /*
